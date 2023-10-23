@@ -2,7 +2,7 @@ import {useState} from 'react';
 //import DateObject from "react-date-object";
 
 //title, description, author, datecreated, uuid passed as props
-export default function Post ({ title, Description, author, dateCreated, postID, complete }) {
+export default function Post ({ title, Description, author, dateCreated, postID }) {
 
   //useState hook within Post component set to empty string init
 const [dateCompleted, setDateCompleted] = useState("");
