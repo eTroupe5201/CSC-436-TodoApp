@@ -7,7 +7,7 @@ export default function PostList ({posts = []}) {
    {posts.map((p, i) => 
    
    <Post {...p} key={'post-' + i} />)}
-
+ 
   </div>);
 }
 //Class Notes

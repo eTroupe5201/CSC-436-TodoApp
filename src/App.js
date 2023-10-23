@@ -1,38 +1,50 @@
 import Userbar from "./Userbar";
 import CreateTodoItem from "./CreateTodoItem";
-import { useState } from "react";
 import PostTodoList from "./PostTodoList";
+import React, { useReducer } from "react";
+import appReducer  from "./reducers";
 
 
 function App() {
+  //use reducer for global variables set here
+  const initialPosts = [];
+ 
+  const [state, dispatch] = useReducer(appReducer, {
+    user: "",
+    posts: initialPosts,
+  });
   
-  const [user, setUser] = useState("");
-  const initialPosts = [
-
-  ];
-  const [posts, setPosts] = useState(initialPosts);
-  
-  const handleAddPost = (newPost) => {
-    setPosts([newPost, ...posts]); //set new post opbect and prepend it into a list
+  //const [show, setShowComponent] = useState(false);
+ 
+  function toggle(){
+    if(state.user === ""){
+      return false;
+    }else{
+      return true;
+    }
   }
   
+
+//const { user, posts } = state; //user data is in state, destructured
+//destructure allows you to access specfic objects values without using . or brackets
+  
+  const handleAddPost = (newPost) => {
+     dispatch({type:"CREATE_POST", ...newPost});
+  };
+  //update this globally
+
    return (
     
-   <html>
-    
-   
     <div>
-      
       <h1>Erica Troupe's Todo App</h1>
-      <Userbar user={user} setUser={setUser}/> 
-      <p className="CreatePost"></p><CreateTodoItem user={user} handleAddPost={handleAddPost}/>
-      <PostTodoList posts={posts}/>
-    
+      <Userbar user={state.user} dispatch={dispatch} />
+      <p className="CreatePost"></p>
+      {toggle() && <CreateTodoItem user={state.user} handleAddPost={handleAddPost}/>}
+      {toggle()&& <PostTodoList posts={state.posts}/>}
     </div>
-    </html>
   );
  }
-
+//conditional rendering added based on userReducer, not sure if I can add toggle to reducer
 
 //hello name is being evaluated, 
 //value is a controlled input
