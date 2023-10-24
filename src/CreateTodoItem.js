@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {v4 as uuid} from "uuid";
+import"./App.css";
 export default function CreatePost({ user, handleAddPost }) {
   //Notes:  state lets component remember user input
   // useState - declares a state variable that you can update directly
@@ -41,21 +42,21 @@ export default function CreatePost({ user, handleAddPost }) {
         handleCreate();
       }}
     >
-      <div>
-        Author: <b>{user}</b>
-      </div>
-      <div>
+      <div className="createTodo">
+        <table><tbody><tr>
+          <td>Author: <b>{user}</b></td>
+          <td>  <div>
         <label htmlFor="create-title">Title:</label>
         <input
           type="text"
           value={title}
           onChange={handleTitle}
           name="create-title"
-          id="create-title"
-        />
-      </div>
-      <textarea value={description} onChange={handleContent} />
-      <input type="submit" value="Create" />
-    </form>
+          id="create-title"/></div></td>
+          <td><textarea value={description} onChange={handleContent} /></td>
+          <td> <input className="btn" type="submit" value="Create" /></td>
+          </tr></tbody></table>
+        </div>
+        </form>
   );
 }

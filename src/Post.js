@@ -1,14 +1,12 @@
-import {useState} from 'react';
-//import DateObject from "react-date-object";
-
-//title, description, author, datecreated, uuid passed as props
-export default function Post ({ title, Description, author, dateCreated, postID }) {
+import {useState} from "react";
+import"./App.css";
+export default function Post ({ title, Description, author, dateCreated, postID}) {
 
   //useState hook within Post component set to empty string init
 const [dateCompleted, setDateCompleted] = useState("");
-//const [complete, setComplete] = useState("");
+const [complete, setComplete] = useState("");
 const [completeText, setCompleteText] = useState("");
-//const { user, posts } = state; 
+
 function handleComplete(evt){
  
     if (evt.target.checked) {
@@ -25,23 +23,32 @@ function handleComplete(evt){
       }
       setComplete(current => !current);
     }
+// function handleDelete(currentID){
+//  const newTodoList = posts.filter(item => item.postID !== currentID);
+//  //update list from here
+// }
+
 
 
     return (
-         <div  class="todoElement">
-            <tr>
-            <td>Title: {title}</td>&nbsp; 
-            <td>Description: {Description}</td>&nbsp; 
-            <td><i>Written by <b>{author}</b></i></td> &nbsp; 
-            <td>Date Created: {dateCreated}</td>&nbsp; 
-            <td>Complete: <input type="checkbox" value={complete} onChange={handleComplete} ></input></td>&nbsp; 
-            <input type="text" value={completeText} placeholder="Not Complete" disabled></input>
-            <td>Date Completed:<input type="text" value={dateCompleted} placeholder="Not Complete" disabled></input> </td>
-            <td>ID:<input type="text" value={postID} disabled></input> </td>
-           
-            <button >Delete</button>
-       
-            </tr>
+      <div >
+        <div className="TodoItem">
+          <table>
+            <tbody>
+              <tr >
+                <td >Title: {title}</td> 
+                <td>Description: {Description}</td>
+                <td><i>Written by <b>{author}</b></i></td> 
+                <td>Date Created: {dateCreated}</td>
+                <td>Complete: <input type="checkbox" value={complete} onChange={handleComplete} ></input></td> 
+                <td><input type="text" value={completeText} placeholder="Not Complete" disabled></input></td>
+                <td>Date Completed:<input type="text" value={dateCompleted} placeholder="Not Complete" disabled></input> </td>
+                <td>ID:<input type="text" value={postID} disabled></input> </td>
+                {/* <td><button >Delete</button></td> */}
+              </tr>
+            </tbody>
+          </table>
+        </div>
         </div>);
 }
 //accepts title Description and authur as props

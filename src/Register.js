@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+
 export default function Register({ dispatch }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -51,6 +52,7 @@ export default function Register({ dispatch }) {
       />
 
       <input
+        className="btn" 
         type="submit"
         value="Register"
         disabled={

@@ -10,8 +10,8 @@ export default function UserBar({user, dispatch}) {
     } else {
         return (
             <>
-              <p className="login"><Login  dispatch={dispatch}/></p>
-              <p className="register"><Register  dispatch={dispatch}/></p>
+              <Login  dispatch={dispatch}/>
+              <Register  dispatch={dispatch}/>
             </>
         );
     }

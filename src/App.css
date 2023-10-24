@@ -1,9 +1,6 @@
 
 h1{
-background: -webkit-linear-gradient(100deg, #50ffe8,#ffb6d8, #50ffff);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-font-size: xx-large;
+color: white;
 text-align: center;
 }
 
@@ -17,16 +14,31 @@ padding: 20px;
 width: 200px;
 height: 150px;
 }
-.login{
+
+.TodoItem{
     border: solid #f197c1;
-    height: 100%;
-    text-align: center;
-    border-radius: 25px;
+    background: rgb(255, 213, 229);
+    margin-top: 1%;
+    border-style: outset;
+}
+
+html{
     background: linear-gradient(#ffb6d8, #50ffff);
-    padding: 20px;
-    width: 200px;
-    height: 150px;
+   background-repeat: no-repeat;
+   background-size: cover;
+   height: 100%;
+}
+.btn{
+    border: solid #f197c1;
+    background: rgb(255, 181, 249);
+    color: white;
+    border-style: outset;
+    margin-left: 3px;
+}
+.createTodo{
+    border: solid #f197c1;
+    border-style: outset;
+    background: rgb(140, 251, 255);
     
-    }
-
-
+    text-align: center;
+}

@@ -4,7 +4,7 @@ export default function Logout({user, dispatch}) {
       dispatch({type: 'LOGOUT'});
       }}>
          Logged in as: <b>{user}</b>
-         <input type="submit" value="Logout" />
+         <input className = "btn" type="submit" value="Logout" />
       </form>
      );
  }

@@ -25,7 +25,7 @@ export default function Login({ dispatch }) {
       />
       <label htmlFor="login-password">Password:</label>
       <input type="password" name="login-password" id="login-password" />
-      <input type="submit" value="Login" disabled={username.length === 0} />
+      <input  className="btn" type="submit" value="Login" disabled={username.length === 0} />
     </form>
   );
 }
