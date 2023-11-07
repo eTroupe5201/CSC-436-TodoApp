@@ -22,14 +22,15 @@ function userReducer(state, action) {
         dateCreated: action.dateCreated,
         postID: action.postID, 
       
+      
       };
       return [newPost, ...state];
       case "FETCH_TODO":
         return action.posts;
       case "DELETE_TODO":
-        return action.posts
+        return action.posts;
       case "TOGGLE_TODO":
-        return action.posts
+        return action.posts;
     default:
       return state;
   }
