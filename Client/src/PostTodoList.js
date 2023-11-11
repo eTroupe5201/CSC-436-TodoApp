@@ -4,9 +4,10 @@ import {useContext} from "react";
 
 export default function PostList () {
   const {state, dispatch} = useContext(StateContext);
+  const {posts} = state;
  return (
   <div>
-   {state.posts.map((p, i) => 
+   {posts.map((p, i) => 
    
    <Post {...p} key={'post-' + i} />)}
  
