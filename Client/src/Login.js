@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect,useContext } from "react";
 import {StateContext} from "./context";
-import {useContext} from "react";
+
 import {useResource} from "react-request-hook";
 
 export default function Login() {

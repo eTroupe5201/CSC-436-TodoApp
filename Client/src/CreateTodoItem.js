@@ -1,8 +1,7 @@
-import { useState } from "react";
-import {v4 as uuid} from "uuid";
+import { useState,useContext, useEffect } from "react";
+//import {v4 as uuid} from "uuid";
 import"./App.css";
 import {StateContext} from "./context";
-import {useContext} from "react";
 import { useResource } from "react-request-hook";
 export default function CreatePost() {
   //Notes:  state lets component remember user input
@@ -13,7 +12,10 @@ export default function CreatePost() {
   const [title, setTitle] = useState("");
   const [description, setContent] = useState("");
   const [dateCreated, setDateCreated] = useState("");
-  const [postID, setID] = useState("");
+  const [dateCompleted, setDateCompleted] = useState("");
+  const [complete, setComplete] = useState("");
+  const [completeText, setCompleteText] = useState("Not Complete");
+  
 
   const {state, dispatch} = useContext(StateContext);
   const {user} = state;
@@ -27,31 +29,49 @@ export default function CreatePost() {
 
   function handleContent(evt) {
     setContent(evt.target.value);
-    setID( uuid);
+   // setID( uuid);
     const currentDate = Date.now();
     const f = new Intl.DateTimeFormat("en-us", {
       dateStyle: "full"
     })
     setDateCreated(f.format(currentDate));
+    setComplete(false);
+    setCompleteText("Not Complete");
+    setDateCompleted("");
 
     
   }
  
-  const [post, createPost] = useResource(({ title, description, author, dateCreated, postID }) => ({
+  const [post, createPost] = useResource(({ title, description, author, dateCreated, complete, completeText, dateCompleted}) => ({
     url: "/CreateTodoItem",
     method: "post",
-    data: { title, description, author, dateCreated, postID },
+    data: { title, description, author, dateCreated, complete, completeText, dateCompleted},
   }));
 
  
 
   function handleCreate() {
-    const newPost = { title, description, author: user, dateCreated, postID};
+    const newPost = {title, description, author:user, dateCreated, complete, completeText, dateCompleted};
     createPost(newPost)
-    dispatch({type:"CREATE_POST", ...newPost});
+  
   }
   
-  
+  useEffect(() => {
+
+    if (post?.isLoading === false && post?.data) {
+      dispatch({
+        type: "CREATE_POST",
+        title: post.data.title,
+        description: post.data.description,
+        author: post.data.author,
+        complete: post.data.complete,
+        completeText: post.data.completeText,
+        dateCompleted: post.data.dateCompleted,
+        id: post.data.id,
+      });
+    }
+  }, [post]);
+  //this updates the page
   //create an id for each todo, iterate through array find id and remove the post
 
   return (

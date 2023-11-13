@@ -20,9 +20,10 @@ function userReducer(state, action) {
         description: action.description,
         author: action.author,
         dateCreated: action.dateCreated,
-        postID: action.postID, 
-      
-      
+        complete: action.complete,
+        completeText: action.completeText,
+        dateCompleted: action.dateCompleted,
+        id: action.id, 
       };
       return [newPost, ...state];
       case "FETCH_TODO":

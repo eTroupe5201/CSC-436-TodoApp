@@ -1,6 +1,6 @@
-import { useState , useEffect} from "react";
+import { useState , useEffect,useContext} from "react";
 import {StateContext} from "./context";
-import {useContext} from "react";
+
 import {useResource} from "react-request-hook";
 
 export default function Register() {
@@ -14,6 +14,7 @@ export default function Register() {
     method: "post",
     data:{email:username, password},
   }));
+  
   useEffect(() => {
     if(user && user.data){
       dispatch({type: "REGISTER", username:user.data.user.email});
