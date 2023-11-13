@@ -33,7 +33,7 @@ function handleComplete(evt){
     }
     const [updatedPost, updateComplete] = useResource((endpoint, dateCreated, complete, completeText, dateCompleted) => ({
       url: endpoint,
-      method: "patch", //data deletes with put
+      method: "patch", //data deletes on refresh with put
       data: {  dateCreated, complete, completeText, dateCompleted},
     }));
 
@@ -66,20 +66,10 @@ function handleComplete(evt){
       const element = "/CreateTodoItem/" + JSON.stringify(id);
       createDelete(element);
       dispatch({type: "DELETE_TODO",id, });
-      console.log(id);
-   //   deleteDivById(id);
-    console.log(element);
+
   };
 
-//   //so this works, now update the page with a use hook
-  //hacky delete until you figure out use
-//   function deleteDivById(currentElement)  
-// {   
-//     var item = document.getElementById(currentElement);
-//     item.parentNode.removeChild(item);
-    
-// }
-//try to make use a useEffect hook, not sure how 
+
     return (
       <div >
         <div id={id} className="TodoItem">
