@@ -3,11 +3,14 @@ import {StateContext} from "./context";
 
 import {useResource } from "react-request-hook";
 import"./App.css";
-export default function Post ({ title, description, author, dateCreated, complete, completeText, dateCompleted, id}) {
+export default function Post ({ title, description, author, dateCreated, id}) {
 
   //useState hook within Post component set to empty string init
 
 const {state, dispatch} = useContext(StateContext);
+const [dateCompleted, setDateCompleted] = useState("");
+const [complete, setComplete] = useState("");
+const [completeText, setCompleteText] = useState("");
 
 
 function handleComplete(evt){
@@ -18,47 +21,64 @@ function handleComplete(evt){
         const f = new Intl.DateTimeFormat("en-us", {
           dateStyle: "full"
         })
-       
-        updateComplete(endpoint, true,  "Complete",f.format(currentDate),);
+            setComplete(true);
+            setCompleteText("Complete");
+            setDateCompleted(f.format(currentDate));
       } else {
-        post.complete = false;
-        updateComplete(endpoint, false, "Not Complete", "");
-
+        setComplete(false);
+        setCompleteText("Not Complete");
+        setDateCompleted("");
       }
-      
- //post.complete = current => !current;
-   // post.complete = current => !current;
+      updateComplete(endpoint, complete, completeText, dateCompleted);
     }
-    const [updatedPost, updateComplete] = useResource((endpoint, complete,  completeText, dateCompleted,id) => ({
+    const [updatedPost, updateComplete] = useResource((endpoint, dateCreated, complete, completeText, dateCompleted) => ({
       url: endpoint,
-      method: "put",
-      data: { title, description, author, dateCreated,complete, completeText, dateCompleted, id},
+      method: "patch", //data deletes with put
+      data: {  dateCreated, complete, completeText, dateCompleted},
     }));
 
-
-  const [post, createDelete] = useResource((element) => ({
+  const [post, createDelete] = useResource((element, id)=> ({
     url: element,
     method: "delete",
-    data: { title, description, author, dateCreated,complete, completeText, dateCompleted, id},
+    data: {id},
   }));
+
+
+  useEffect(() => {
+    if (updatedPost?.isLoading === false && updatedPost?.data) {
+      dispatch({
+        type: "TOGGLE_TODO", 
+        title: updatedPost.data.title, 
+        description: updatedPost.data.description, 
+        author: updatedPost.data.author,
+        dateCreated: updatedPost.data.dateCreated, 
+        complete: updatedPost.data.complete, 
+        completedText: updatedPost.data.completeText,
+        dateCompleted: updatedPost.data.dateCompleted,
+        id: updatedPost.data.id
+      });
+    }
+  }, [updatedPost]);
 
 
   
   function handleDelete(){
       const element = "/CreateTodoItem/" + JSON.stringify(id);
       createDelete(element);
-      deleteDivById(id);
+      dispatch({type: "DELETE_TODO",id, });
+      console.log(id);
+   //   deleteDivById(id);
     console.log(element);
   };
 
-  //so this works, now update the page with a 
-  
-  function deleteDivById(currentElement)  
-{   
-    var item = document.getElementById(currentElement);
-    item.parentNode.removeChild(item);
+//   //so this works, now update the page with a use hook
+  //hacky delete until you figure out use
+//   function deleteDivById(currentElement)  
+// {   
+//     var item = document.getElementById(currentElement);
+//     item.parentNode.removeChild(item);
     
-}
+// }
 //try to make use a useEffect hook, not sure how 
     return (
       <div >

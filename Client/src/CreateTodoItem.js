@@ -12,10 +12,7 @@ export default function CreatePost() {
   const [title, setTitle] = useState("");
   const [description, setContent] = useState("");
   const [dateCreated, setDateCreated] = useState("");
-  const [dateCompleted, setDateCompleted] = useState("");
-  const [complete, setComplete] = useState("");
-  const [completeText, setCompleteText] = useState("Not Complete");
-  
+
 
   const {state, dispatch} = useContext(StateContext);
   const {user} = state;
@@ -35,38 +32,28 @@ export default function CreatePost() {
       dateStyle: "full"
     })
     setDateCreated(f.format(currentDate));
-    setComplete(false);
-    setCompleteText("Not Complete");
-    setDateCompleted("");
-
-    
+ 
   }
  
-  const [post, createPost] = useResource(({ title, description, author, dateCreated, complete, completeText, dateCompleted}) => ({
+  const [post, createPost] = useResource(({ title, description, author, dateCreated, }) => ({
     url: "/CreateTodoItem",
     method: "post",
-    data: { title, description, author, dateCreated, complete, completeText, dateCompleted},
+    data: { title, description, author, dateCreated},
   }));
 
- 
 
   function handleCreate() {
-    const newPost = {title, description, author:user, dateCreated, complete, completeText, dateCompleted};
+    const newPost = {title, description, author: user, dateCreated};
     createPost(newPost)
-  
   }
   
   useEffect(() => {
-
     if (post?.isLoading === false && post?.data) {
       dispatch({
         type: "CREATE_POST",
         title: post.data.title,
         description: post.data.description,
         author: post.data.author,
-        complete: post.data.complete,
-        completeText: post.data.completeText,
-        dateCompleted: post.data.dateCompleted,
         id: post.data.id,
       });
     }

@@ -22,16 +22,25 @@ function userReducer(state, action) {
         dateCreated: action.dateCreated,
         complete: action.complete,
         completeText: action.completeText,
-        dateCompleted: action.dateCompleted,
+        dateCompleted: action.dateCompleted, 
         id: action.id, 
       };
       return [newPost, ...state];
       case "FETCH_TODO":
         return action.posts;
+        //needed code here, filter by id 
       case "DELETE_TODO":
-        return action.posts;
+        return state.filter((deletedTodo) => deletedTodo.id !== action.id);
       case "TOGGLE_TODO":
-        return action.posts;
+          //had to map, like postTodoList, wouldnt work without it
+          return state.map((currentTodo) => {
+              if(currentTodo.id === action.id) {
+                  currentTodo.complete = action.complete;
+                  currentTodo.completeText = action.completeText;
+                  currentTodo.dateCompleted = action.dateCompleted;
+              }
+              return currentTodo;
+          })
     default:
       return state;
   }
