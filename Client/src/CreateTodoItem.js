@@ -10,7 +10,7 @@ export default function CreatePost() {
 
   //state hooks for create todo component - initalState set to empty string
   const [title, setTitle] = useState("");
-  const [description, setContent] = useState("");
+  const [content, setContent] = useState("");
   const [dateCreated, setDateCreated] = useState("");
 
 
@@ -35,15 +35,16 @@ export default function CreatePost() {
  
   }
  
-  const [post, createPost] = useResource(({ title, description, author, dateCreated, }) => ({
-    url: "/CreateTodoItem",
+  const [post, createPost] = useResource(({ title, content }) => ({
+    url: "/post",
     method: "post",
-    data: { title, description, author, dateCreated},
+    headers: {Authorization: `${user?.access_token}`},
+    data: {title, content},
   }));
 
 
   function handleCreate() {
-    const newPost = {title, description, author: user, dateCreated};
+    const newPost = {title, content };
     createPost(newPost)
   }
   
@@ -52,9 +53,13 @@ export default function CreatePost() {
       dispatch({
         type: "CREATE_POST",
         title: post.data.title,
-        description: post.data.description,
+        content: post.data.content,
         author: post.data.author,
-        id: post.data.id,
+        dateCreated: post.data.dateCreated, 
+        complete: post.data.complete, 
+        completedText: post.data.completeText,
+        dateCompleted: post.data.dateCompleted,
+        id: post.data.id
       });
     }
   }, [post]);
@@ -70,7 +75,7 @@ export default function CreatePost() {
     >
       <div className="createTodo">
         <table><tbody><tr>
-          <td>Author: <b>{user}</b></td>
+          <td>Author: <b>{user.username}</b></td>
           <td>  <div>
         <label htmlFor="create-title">Title:</label>
         <input
@@ -79,7 +84,7 @@ export default function CreatePost() {
           onChange={handleTitle}
           name="create-title"
           id="create-title"/></div></td>
-          <td><textarea value={description} onChange={handleContent} /></td>
+          <td><textarea value={content} onChange={handleContent} /></td>
           <td> <input className="btn" type="submit" value="Create" /></td>
           </tr></tbody></table>
         </div>

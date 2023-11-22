@@ -7,19 +7,32 @@ export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
-  const {dispatch} = useContext(StateContext);
+  const [ status, setStatus] = useState("");
+
+  // const {dispatch} = useContext(StateContext);
   
   const[user, register] = useResource((username, password) => ({
-    url:"/users",
+    url:"/auth/register",
     method: "post",
-    data:{email:username, password},
+    data:{username, password, passwordConfirmation: password},
   }));
   
   useEffect(() => {
-    if(user && user.data){
-      dispatch({type: "REGISTER", username:user.data.user.email});
+    if (user && user.isLoading === false && (user.data || user.error)) {
+    if (user.error) {
+      setStatus("Registration failed, please try again later.");
+    } else {
+      setStatus("Registration successful. You may now login.");
     }
-  }, [user]);
+    }
+    }, [user]);
+    
+  
+  // useEffect(() => {
+  //   if(user && user.data){
+  //     dispatch({type: "REGISTER", username:user.data.user.email});
+  //   }
+  // }, [user]);
 
   function handleUsername(evt) {
     setUsername(evt.target.value);
@@ -36,7 +49,7 @@ export default function Register() {
       onSubmit={(e) => {
         e.preventDefault();
         register(username, password);
-        dispatch({ type: "REGISTER", username });
+       // dispatch({ type: "REGISTER", username });
       }}
     >
       <label htmlFor="register-username">Username:</label>
@@ -76,6 +89,8 @@ export default function Register() {
           password !== passwordRepeat
         }
       />
+      {status && <p>{status}</p>}
+
     </form>
   );
 }

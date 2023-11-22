@@ -1,11 +1,16 @@
 function userReducer(state, action) {
   switch (action.type) {
     case "LOGIN":
-    case "REGISTER":
-      return action.username
-
+      return {
+        username: action.username,
+        access_token: action.access_token,
+        };
+        case "CLEAR_POSTS":
+          return [];
+        
+    //changed
     case "LOGOUT":
-      return ""
+      return "";
  
     default:
       return state;
@@ -17,7 +22,7 @@ function userReducer(state, action) {
     case "CREATE_POST":
       const newPost = {
         title: action.title,
-        description: action.description,
+        content: action.content,
         author: action.author,
         dateCreated: action.dateCreated,
         complete: action.complete,

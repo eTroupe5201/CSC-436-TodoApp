@@ -16,33 +16,52 @@ function App() {
   //     .then((posts) => dispatch({ type:"FETCH_TODO", posts}));
   // }, []);
 
-  const [postResponse, getPosts] = useResource(() => ({
-    url:'/CreateTodoItem',
-    method: "get"
-  }));
-  
-  useEffect(getPosts, []);
+  // const [postResponse, getPosts] = useResource(() => ({
+  //   url:'/CreateTodoItem',
+  //   method: "get"
+  // }));
 
-  useEffect(() => {
-    if(postResponse && postResponse.data){
-      dispatch({ type:"FETCH_TODO", posts: postResponse.data.reverse()});
+  
+
+  // useEffect(() => {
+  //   if(postResponse && postResponse.data){
+  //     dispatch({ type:"FETCH_TODO", posts: postResponse.data.reverse()});
       
-    }
-  }, [postResponse]); //was missing the postResponse
+  //   }
+  // }, [postResponse]); //was missing the postResponse
 
-  
+
 
   const [state, dispatch] = useReducer(appReducer, {
     user: "",
     posts: [],
   });
 
-  
-  
+const {user} = state;
+
+    const [posts, getPosts] = useResource(() => ({
+    url: "/post",
+    method: "get",
+    headers: { Authorization: `${state?.user?.access_token}` },
+    }));
+
+   
+    
+    useEffect(() => {
+      getPosts();
+    }, [state?.user?.access_token]);
+
+       useEffect(() => {
+    if (posts && posts.isLoading === false && posts.data) {
+      dispatch({ type: "FETCH_POSTS", posts: posts.data.posts.reverse() });
+    }
+    }, [posts]);
+   
+    useEffect(getPosts, []);
   //const [show, setShowComponent] = useState(false);
  
   function toggle(){
-    if(state.user === ""){
+    if(user === ""){
       return false;
     }else{
       return true;

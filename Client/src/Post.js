@@ -3,18 +3,19 @@ import {StateContext} from "./context";
 
 import {useResource } from "react-request-hook";
 import"./App.css";
-export default function Post ({ title, description, author, dateCreated, id}) {
+export default function Post ({ title, content, author, dateCreated, id}) {
 
   //useState hook within Post component set to empty string init
 
 const {state, dispatch} = useContext(StateContext);
+const {user} = state;
 const [dateCompleted, setDateCompleted] = useState("");
 const [complete, setComplete] = useState("");
 const [completeText, setCompleteText] = useState("");
 
 
 function handleComplete(evt){
-  const endpoint = "/CreateTodoItem/" + JSON.stringify(id);
+  //const endpoint = "/post/" + JSON.stringify(id);
   
     if (evt.target.checked) {
         const currentDate = Date.now();
@@ -29,17 +30,20 @@ function handleComplete(evt){
         setCompleteText("Not Complete");
         setDateCompleted("");
       }
-      updateComplete(endpoint, complete, completeText, dateCompleted);
+      updateComplete(complete, completeText, dateCompleted);
     }
-    const [updatedPost, updateComplete] = useResource((endpoint, dateCreated, complete, completeText, dateCompleted) => ({
-      url: endpoint,
+    const [updatedPost, updateComplete] = useResource((complete, completeText, dateCompleted) => ({
+      url: `/Post/${id}`,
       method: "patch", //data deletes on refresh with put
-      data: {  dateCreated, complete, completeText, dateCompleted},
+      headers: {Authorization: `${user?.access_token}`},
+      //headers: {Authorization: `${state?.user.access_token}`}, glitched, added user to state
+      data: {complete, completeText, dateCompleted},
     }));
 
-  const [post, createDelete] = useResource((element, id)=> ({
-    url: element,
+  const [post, createDelete] = useResource((id)=> ({
+    url: `/Post/${id}`,
     method: "delete",
+    headers: {Authorization: `${user?.access_token}`},
     data: {id},
   }));
 
@@ -49,7 +53,7 @@ function handleComplete(evt){
       dispatch({
         type: "TOGGLE_TODO", 
         title: updatedPost.data.title, 
-        description: updatedPost.data.description, 
+        content: updatedPost.data.content, 
         author: updatedPost.data.author,
         dateCreated: updatedPost.data.dateCreated, 
         complete: updatedPost.data.complete, 
@@ -63,8 +67,8 @@ function handleComplete(evt){
 
   
   function handleDelete(){
-      const element = "/CreateTodoItem/" + JSON.stringify(id);
-      createDelete(element);
+      //const element = "/post/" + JSON.stringify(id);
+      createDelete(id);
       dispatch({type: "DELETE_TODO",id, });
 
   };
@@ -77,7 +81,7 @@ function handleComplete(evt){
             <tbody>
               <tr  >
                 <td >Title: {title}</td> 
-                <td>Description: {description}</td>
+                <td>Description: {content}</td>
                 <td><i>Written by <b>{author}</b></i></td> 
                 <td>Date Created: {dateCreated}</td>
                 <td>Complete: <input type="checkbox" value={complete} onChange={handleComplete} ></input></td> 
